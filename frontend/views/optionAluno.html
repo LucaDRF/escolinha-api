@@ -1,0 +1,57 @@
+<div ng-style="modalOption" class="modal">
+    <div class="modal-form">
+        <h1 class="common-title">Aluno: {{alunoOption.nome}}</h1>
+        <form>
+            <label for="nome">Nome: </label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="alunoOption.nome" ng-disabled="!alunoOption.nomeCheckbox" value="{{alunoOption.nome}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="alunoOption.nomeCheckbox" type="checkbox">
+                </div>
+            </div>
+            <label for="sobrenome">Sobrenome: </label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="alunoOption.sobrenome" ng-disabled="!alunoOption.sobrenomeCheckbox" value="{{alunoOption.sobrenome}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="alunoOption.sobrenomeCheckbox" type="checkbox">
+                </div>
+            </div>
+            <label for="email">Email: </label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="alunoOption.email" ng-disabled="!alunoOption.emailCheckbox" value="{{alunoOption.email}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="alunoOption.emailCheckbox" type="checkbox">
+                </div>
+            </div>
+            <label for="peso">Peso: </label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="alunoOption.peso" ng-disabled="!alunoOption.pesoCheckbox" value="{{alunoOption.peso}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="alunoOption.pesoCheckbox" type="checkbox">
+                </div>
+            </div>
+            <label for="altura">Altura: </label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="alunoOption.altura" ng-disabled="!alunoOption.alturaCheckbox" value="{{alunoOption.altura}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="alunoOption.alturaCheckbox" type="checkbox">
+                </div>
+            </div>
+            <div class="input-group mb-3" ng-show="alunoOption.Imagem">
+                <a target="_blank" href="{{alunoOption.Imagem.url || 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}}"><img class="rounded-circle" src="{{alunoOption.Imagem.url || 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg' }}"></img></a>
+                <div class="input-group-text">
+                    <button ng-click="deleteImage(alunoOption)" class="btn-close" aria-label="Close" type="button"></button>
+                </div>
+            </div>
+
+            <div ng-show="alunoOptionError.error" class="alert alert-danger" role="alert">
+                {{alunoOptionError.error}}
+              </div>
+        </form>
+        <div>
+            <button ng-click="upadteAluno(alunoOption)" class="btn btn-primary btn-block form-newAluno">Atualizar
+                aluno</button>
+            <button ng-click="setModal('options')" class="btn btn-danger btn-block form-newAluno">Cancelar</button>
+        </div>
+    </div>
+</div>

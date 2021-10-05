@@ -1,0 +1,30 @@
+<style>
+    body {
+        background-color: #f0f0f0f0;
+    }
+</style>
+<div class="container">
+    <h1 class="name-title">ESCOLINHA API</h1>
+    <form name="loginForm">
+        <div class="mb-3">
+            <label class="form-label">Login:</label>
+            <input name="email" ng-required="true" ng-model="login.email" class="form-control" type="text">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Senha:</label>
+            <input name="password" ng-required="true" ng-model="login.password" class="form-control" type="password">
+        </div>
+        <div ng-show="!login.email && !loginForm.email.$pristine" class="alert alert-danger" role="alert">
+            Email obrigatório
+        </div>
+        <div ng-show="!login.password && !loginForm.password.$pristine" class="alert alert-danger" role="alert">
+            Senha obrigatória
+        </div>
+
+        <div class="d-grid gap-2">
+            <button ng-click="requestSubmitLogin(login)" ng-disabled="!loginForm.$valid" class="btn btn-primary" type="button">Entre</button>
+            <button ng-click="cadastro()" class="btn btn-secondary" type="button">Cadastre</button>
+        </div>
+        <br>
+    </form>
+</div>

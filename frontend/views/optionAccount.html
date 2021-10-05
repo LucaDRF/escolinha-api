@@ -1,0 +1,58 @@
+<div ng-style="modalOptionAccount" class="modal">
+    <div class="modal-form">
+        <form>
+            <label for="nome">Nome:</label>
+            <div class="input-group mb-3">
+                <input name="nome" class="form-control update" ng-model="accountOption.nome" ng-disabled="!accountOption.nomeCheckbox" value="{{accountOption.nome}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="accountOption.nomeCheckbox" type="checkbox">
+                </div>
+            </div>
+
+            <label for="email">Email:</label>
+            <div class="input-group mb-3">
+                <input class="form-control update" ng-model="accountOption.email" ng-disabled="!accountOption.emailCheckbox" value="{{accountOption.email}}">
+                <div class="input-group-text">
+                    <input class="form-check update" ng-model="accountOption.emailCheckbox" type="checkbox">
+                </div>
+            </div>
+            <div ng-show="errorAccount.email" class="alert alert-danger" role="alert">
+                {{errorAccount.email}}
+            </div>
+
+            <div ng-show="passChanged">
+                <label for="email">Senha antiga:</label>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control update" ng-model="accountOption.oldPassword" value="{{accountOption.email}}">
+                </div>
+                <label for="email">Nova Senha:</label>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control update" ng-model="accountOption.password" value="{{accountOption.email}}">
+                </div>
+                <div ng-show="errorAccount.password" class="alert alert-danger" role="alert">
+                    {{errorAccount.password}}
+                </div>
+
+                <label for="email">Confirme a senha:</label>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control update" ng-model="accountOption.confirmPassword" value="{{accountOption.email}}">
+                </div>
+                <div ng-show="errorAccount.password" class="alert alert-danger" role="alert">
+                    {{errorAccount.password}}
+                </div>
+            </div>
+
+            <div ng-show="errorAccount.oldPassword" class="alert alert-danger" role="alert">
+                {{errorAccount.oldPassword}}
+            </div>
+            <div class="changePass">
+                <a ng-click="changePass()" href="">Trocar senha</a>
+            </div>
+        </form>
+        <div>
+            <button ng-click="upadteAccount(accountOption)" class="btn btn-primary btn-block form-newAluno">Atualizar
+                dados</button>
+            <button ng-click="setModal('updateAccount')" class="btn btn-danger btn-block form-newAluno">Cancelar</button>
+        </div>
+    </div>
+</div>

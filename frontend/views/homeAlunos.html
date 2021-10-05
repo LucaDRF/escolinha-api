@@ -1,0 +1,78 @@
+<style>
+    #alunos {
+        background-color: #868686;
+    }
+
+    .form-control.filter {
+    width: 30%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+</style>
+<div class="main">
+    <div ng-include="'views/sidebar.html'"></div>
+    <div class="content-table">
+        <table class="table">
+            <div ng-include="'views/addAluno.html'"></div>
+            <div ng-include="'views/optionAluno.html'"></div>
+            <div ng-include="'views/alertDelete.html'"></div>
+            <div ng-include="'views/alertDeleteAlunos.html'"></div>
+            <div ng-include="'views/warningAccount.html'"></div>
+            <div ng-include="'views/optionAccount.html'"></div>
+            {{newAlunos}}
+            <input ng-change="filterAll(alunos, filter)" ng-model="filter" placeholder="Filtre" class="form-control filter">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>Foto</th>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Email</th>
+                    <th>Peso</th>
+                    <th>Altura</th>
+                    <th>Created at</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-class="{'table-danger': aluno.selected}" ng-repeat="aluno in alunosFormated[actualPage]">
+                    <td><input type="checkbox" ng-model="aluno.selected"></td>
+                    <td>{{aluno.id}}</td>
+                    <td><a target="_blank"
+                            href="{{aluno.Imagem.url || 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}}"><img
+                                class="rounded-circle"
+                                src="{{aluno.Imagem.url || 'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg'}}"></img></a>
+                    </td>
+                    <td>{{aluno.nome | uppercaseName}}</td>
+                    <td>{{aluno.sobrenome | uppercaseName}}</td>
+                    <td>{{aluno.email}}</td>
+                    <td>{{aluno.peso}}</td>
+                    <td>{{aluno.altura}}</td>
+                    <td>{{aluno.createdAt | date}}</td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                              <h2 style="margin-top: -11.5px;" id="{{aluno.id}}">...</h2>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                              <li><a class="dropdown-item" ng-click="setModal('options', aluno)">Editar</a></li>
+                              <li><a class="dropdown-item" ng-click="setModal('alertDelete', aluno)">Apagar</a></li>
+                            </ul>
+                          </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-group me-2" role="group" aria-label="First group">
+            <button type="button" ng-click="previousPage()" class="btn btn-secondary">Anterior</button>
+            <button type="button" ng-click="changeActualPage($index)" ng-repeat="X in [].constructor(qtdTab) track by $index" class="btn btn-primary">{{$index + 1}}</button>
+            <button type="button" ng-click="nextPage()" class="btn btn-secondary">Próximo</button>
+        </div>
+          <br>
+        <button ng-click="setModal('form')" class="btn btn-primary btn-block">Adicionar aluno</button>
+        <button ng-disabled="!isAlunoSelected(alunos)" ng-click="setModal('alertDeleteAlunos', alunos)"
+            class="btn btn-danger btn-block">Apagar alunos</button>
+    </div>
+</div>
