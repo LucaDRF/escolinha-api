@@ -17,7 +17,7 @@ angular.module("escolinha").controller("cadastroController", function ($scope, $
         if (!isEmailValid(form.email)){
             errors.push('Email inválido');
         }
-        if (form.password.length <= 6){
+        if (form.password.length < 6){
             errors.push('Digite pelo menos 6 caracteres na senha');
         }
         return errors;

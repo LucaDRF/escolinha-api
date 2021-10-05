@@ -97,13 +97,10 @@ export default {
 
 		await ImgController.delete(req, res);
 
-		console.log(aluno);
 		if (!aluno || aluno.user_creator !== req.userId) {
 			return res.status(401).json({ error: 'Usuário não encontrado' });
 		}
-		console.log('antes');
 		await aluno.destroy();
-		console.log('depois');
 		return res.json({ ok: true });
 	},
 };

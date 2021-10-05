@@ -1,7 +1,7 @@
 import express from 'express';
 import { resolve } from 'path';
 import cors from 'cors';
-import routes from './routes';
+import routes from './routes/routes';
 
 import './database';
 
