@@ -6,8 +6,10 @@ import ImgController from './ImgController';
 export default {
 	async store(req, res) {
 		const {
-			nome, sobrenome, email, altura, peso, user_creator,
+			nome, sobrenome, email, altura, peso,
 		} = req.data;
+
+		const user_creator = req.userId;
 
 		const isSingle = await Aluno.findAll({
 			where: { email, user_creator },

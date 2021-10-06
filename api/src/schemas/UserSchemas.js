@@ -8,12 +8,12 @@ export default {
 			password: Yup.string().required().min(6),
 		});
 
-		if (!(await schema.isValid(req.body))) {
+		try {
+			req.data = await schema.validate(req.body);
+			return next();
+		} catch (error) {
 			return res.status(400).json({ error: 'Erro na validação' });
 		}
-
-		req.data = req.body;
-		return next();
 	},
 
 	async updateValidation(req, res, next) {
@@ -26,12 +26,11 @@ export default {
 			confirmPassword: Yup.string()
 				.when('password', (password, field) => (password ? field.required().oneOf([password]) : field)), // oneOf // matches
 		});
-
-		if (!(await schema.isValid(req.body))) {
+		try {
+			req.data = await schema.validate(req.body);
+			return next();
+		} catch (error) {
 			return res.status(401).json({ error: 'Falha na validação' });
 		}
-
-		req.data = req.body;
-		return next();
 	},
 };

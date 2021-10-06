@@ -2,11 +2,6 @@ import * as Yup from 'yup';
 
 export default {
 	async storeValidation(req, res, next) {
-		const {
-			nome, sobrenome, email, altura, peso,
-		} = req.body;
-
-		const user_creator = req.userId;
 		const schema = Yup.object().shape({
 			nome: Yup.string().required(),
 			sobrenome: Yup.string().required(),
@@ -15,19 +10,12 @@ export default {
 			peso: Yup.number().required(),
 		});
 
-		const isValid = await schema.isValid({
-			nome, sobrenome, email, altura, peso,
-		});
-
-		if (!isValid) {
+		try {
+			req.data = await schema.validate(req.body);
+			return next();
+		} catch (error) {
 			return res.status(401).json({ error: 'Erro na validação' });
 		}
-
-		req.data = {
-			nome, sobrenome, email, altura, peso, user_creator,
-		};
-
-		return next();
 	},
 
 	async updateValidation(req, res, next) {
@@ -39,13 +27,11 @@ export default {
 			peso: Yup.number().positive(),
 		});
 
-		const isValid = await schema.isValid(req.body);
-
-		if (!isValid) {
+		try {
+			req.data = await schema.validate(req.body);
+			return next();
+		} catch (error) {
 			return res.status(401).json({ error: 'Erro na validação' });
 		}
-
-		req.data = req.body;
-		return next();
 	},
 };
