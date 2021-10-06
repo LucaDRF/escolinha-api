@@ -1,76 +1,40 @@
-import Aluno from '../models/Aluno';
-import Imagem from '../models/Imagem';
-
-import ImgController from './ImgController';
+import AlunoServices from '../services/AlunoServices';
 
 export default {
 	async store(req, res) {
-		const {
-			nome, sobrenome, email, altura, peso,
-		} = req.data;
-
-		const user_creator = req.userId;
-
-		const isSingle = await Aluno.findAll({
-			where: { email, user_creator },
-		});
-
-		if (isSingle.length) {
-			return res.status(401).json({ error: 'Email existente' });
+		try {
+			req.data.user_creator = req.userId;
+			const aluno = await AlunoServices.storeAluno(req.data);
+			return res.json(aluno);
+		} catch (error) {
+			return res.status(401).json({ error: error.message });
 		}
-
-		const aluno = await Aluno.create({
-			nome, sobrenome, email, altura, peso, user_creator,
-		});
-
-		return res.json(aluno);
 	},
 
 	async index(req, res) {
-		const alunos = await Aluno.findAll({
-			where: {
-				user_creator: req.userId,
-			},
-			logging: true,
-			include: Imagem,
-		});
-
-		return res.json(alunos);
+		try {
+			const alunos = await AlunoServices.indexAlunos(req.userId);
+			return res.json(alunos);
+		} catch (error) {
+			return res.status(401).json({ error: error.message });
+		}
 	},
 
 	async update(req, res) {
-		const { alunoId } = req.params;
-
-		const aluno = await Aluno.findByPk(alunoId);
-
-		if (!aluno || aluno.user_creator !== req.userId) {
-			return res.status(401).json({ error: 'Usuário não existe' });
+		try {
+			const alunoUpdated = await AlunoServices.updateAluno(req, req.params.alunoId);
+			return res.json(alunoUpdated);
+		} catch (error) {
+			return res.status(401).json({ error: error.message });
 		}
-
-		if (req.data.email) {
-			const isSingle = await Aluno.findAll({
-				where: { email: req.data.email, user_creator: req.userId },
-			});
-
-			if (isSingle.length) {
-				return res.status(401).json({ error: 'Email existente' });
-			}
-		}
-		const alunoUpdated = await aluno.update(req.data);
-
-		return res.json(alunoUpdated);
 	},
 
 	async delete(req, res) {
-		const { alunoId } = req.params;
-		const aluno = await Aluno.findByPk(alunoId);
-
-		await ImgController.delete(req, res);
-
-		if (!aluno || aluno.user_creator !== req.userId) {
-			return res.status(401).json({ error: 'Usuário não encontrado' });
+		try {
+			await AlunoServices.deleteALuno(req.userId, req.params.alunoId);
+			return res.json({ ok: true });
+		} catch (error) {
+			return res.status(401).json({ error: error.message });
 		}
-		await aluno.destroy();
-		return res.json({ ok: true });
 	},
 };

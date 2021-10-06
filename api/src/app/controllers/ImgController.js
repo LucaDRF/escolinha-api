@@ -53,12 +53,11 @@ export default {
 		return res.json(foto);
 	},
 
-	async delete(req, res) {
-		const { alunoId } = req.params;
+	async delete(alunoId) {
 		const aluno = await Aluno.findByPk(alunoId);
 
 		if (!aluno) {
-			return res.status(400).json({ error: 'Aluno não encontrado' });
+			throw new Error('Aluno não encontrado');
 		}
 
 		const foto = await Imagem.findOne({
@@ -67,7 +66,7 @@ export default {
 			},
 		});
 		if (!foto) {
-			return res.status(400).json({ error: 'Foto não encontrada' });
+			return;
 		}
 
 		await aluno.update({ foto_id: null });
@@ -79,7 +78,5 @@ export default {
 				throw err;
 			}
 		});
-
-		return res.json({ deleted: true });
 	},
 };
