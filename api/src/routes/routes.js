@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import imgRoutes from './imgRoutes';
 import tokenRoutes from './tokenRoutes';
-import alunoRoutes from './alunoRoute';
+import alunoRoutes from './alunoRoutes';
 import userRoutes from './userRoutes';
 
 import auth from '../app/middlewares/auth';
