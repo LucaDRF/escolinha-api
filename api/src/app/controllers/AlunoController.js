@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import Aluno from '../models/Aluno';
 import Imagem from '../models/Imagem';
 
@@ -7,25 +6,8 @@ import ImgController from './ImgController';
 export default {
 	async store(req, res) {
 		const {
-			nome, sobrenome, email, altura, peso,
-		} = req.body;
-
-		const user_creator = req.userId;
-		const schema = Yup.object().shape({
-			nome: Yup.string().required(),
-			sobrenome: Yup.string().required(),
-			email: Yup.string().required().email(),
-			altura: Yup.number().required(),
-			peso: Yup.number().required(),
-		});
-
-		const isValid = await schema.isValid({
-			nome, sobrenome, email, altura, peso,
-		});
-
-		if (!isValid) {
-			return res.status(401).json({ error: 'Erro na validação' });
-		}
+			nome, sobrenome, email, altura, peso, user_creator,
+		} = req.data;
 
 		const isSingle = await Aluno.findAll({
 			where: { email, user_creator },
@@ -63,30 +45,16 @@ export default {
 			return res.status(401).json({ error: 'Usuário não existe' });
 		}
 
-		const schema = Yup.object().shape({
-			nome: Yup.string(),
-			sobrenome: Yup.string(),
-			email: Yup.string().email(),
-			altura: Yup.number().positive(),
-			peso: Yup.number().positive(),
-		});
-
-		const isValid = await schema.isValid(req.body);
-
-		if (!isValid) {
-			return res.status(401).json({ error: 'Erro na validação' });
-		}
-
-		if (req.body.email) {
+		if (req.data.email) {
 			const isSingle = await Aluno.findAll({
-				where: { email: req.body.email, user_creator: req.userId },
+				where: { email: req.data.email, user_creator: req.userId },
 			});
 
 			if (isSingle.length) {
 				return res.status(401).json({ error: 'Email existente' });
 			}
 		}
-		const alunoUpdated = await aluno.update(req.body);
+		const alunoUpdated = await aluno.update(req.data);
 
 		return res.json(alunoUpdated);
 	},
