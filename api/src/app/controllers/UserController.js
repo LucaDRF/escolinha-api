@@ -1,60 +1,40 @@
-import User from '../models/User';
+import UserServices from '../services/UserServices';
 
 export default {
 	async store(req, res) {
-		const isSingle = await User.findAll({
-			where: { email: req.data.email },
-		});
-
-		if (isSingle.length) {
-			return res.status(401).json({ error: 'Email existente' });
+		try {
+			const { id, nome, email } = await UserServices.storeUser(req.data);
+			return res.json({ id, nome, email });
+		} catch (error) {
+			return res.status(500).json({ error: error.message });
 		}
-
-		const { id, nome, email } = await User.create(req.data);
-		return res.json({ id, nome, email });
 	},
 
 	async show(req, res) {
-		const { userId } = req;
-		const user = await User.findByPk(userId);
-
-		if (!user) {
-			return res.status(401).json({ error: 'User não encontrado' });
+		try {
+			const user = await UserServices.showUser(req.userId);
+			return res.json(user);
+		} catch (error) {
+			return res.status(500).json({ error: error.message });
 		}
-
-		return res.json(user);
 	},
 
 	async update(req, res) {
-		const user = await User.findByPk(req.userId);
-
-		if (!user) {
-			return res.status(400).json({ error: 'Usuário não encontrado' });
+		try {
+			req.data.userId = req.userId;
+			const data = await UserServices.updateUser(req.data);
+			return res.json(data);
+		} catch (error) {
+			return res.status(500).json({ error: error.message });
 		}
-
-		const { email, oldPassword } = req.data;
-		if (oldPassword && !(await user.checkPassword(oldPassword))) {
-			return res.status(400).json({ error: 'Senha inválida' });
-		}
-
-		if (email) {
-			const emailNotSingle = await User.findAll({
-				where: { email },
-			});
-			if (emailNotSingle.length) {
-				return res.status(401).json({ error: 'Email existente' });
-			}
-		}
-
-		const { newEmail } = await user.update(req.data);
-
-		return res.json({ newEmail, keyChanged: req.data });
 	},
 
 	async delete(req, res) {
-		const user = await User.findByPk(req.userId);
-
-		user.destroy();
-		return res.json({ ok: true });
+		try {
+			await UserServices.deleteUser(req.userId);
+			return res.json({ ok: true });
+		} catch (error) {
+			return res.status(500).json({ error: error.message });
+		}
 	},
 };
